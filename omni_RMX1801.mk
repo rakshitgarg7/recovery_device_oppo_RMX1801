@@ -26,7 +26,7 @@ $(call inherit-product, vendor/omni/config/common.mk)
 PRODUCT_DEVICE := RMX1801
 PRODUCT_NAME := omni_RMX1801
 PRODUCT_BRAND := Realme
-PRODUCT_MODEL := Realme 2 Project
+PRODUCT_MODEL := Realme 2 Pro
 PRODUCT_MANUFACTURER := Oppo
 
 # enable stock zip packages flash
