@@ -1,6 +1,9 @@
 #
 # Copyright 2017 The Android Open Source Project
 #
+# Copyright (C) 2019-2020 OrangeFox Recovery Project
+# Copyright (C) 2020 TWRP
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 # This contains the module build definitions for the hardware-specific
 # components for this device.
 #
@@ -21,6 +25,8 @@
 # bitrot and build breakages. Building a component unconditionally does
 # *not* include it on all devices, so it is safe even with hardware-specific
 # components.
+
+LOCAL_PATH := device/realme/RMX1801
 
 # Architecture
 TARGET_ARCH := arm64
@@ -33,31 +39,55 @@ TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
-TARGET_2ND_CPU_VARIANT := cortex-a53
+TARGET_2ND_CPU_VARIANT := armv8-a
+
+TARGET_USES_64_BIT_BINDER := true
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := sdm660
 TARGET_NO_BOOTLOADER := true
 
-# Filesystem
-TARGET_USERIMAGES_USE_EXT4 := true
-
 # Kernel
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 earlycon=msm_serial_dm,0xc170000 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=1 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 earlycon=msm_serial_dm,0xc170000 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=1 loop.max_part=7
 BOARD_KERNEL_BASE := 0x00000000
-BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_TAGS_OFFSET := 0x00000100
+BOARD_RAMDISK_OFFSET     := 0x01000000
+BOARD_PAGE_SIZE := 4096
+TARGET_KERNEL_ARCH := arm64
 TARGET_PREBUILT_KERNEL := device/oppo/RMX1801/prebuilt/Image.gz-dtb
 
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery.fstab
+
+# Platform
+TARGET_BOARD_PLATFORM := sdm660
+TARGET_BOARD_PLATFORM_GPU := qcom-adreno512
+
 # Partitions
+BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
+BOARD_CACHEIMAGE_PARTITION_SIZE := 260014080
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 5460574208
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 52941119488
+BOARD_VENDORIMAGE_PARTITION_SIZE := 1610612736
 BOARD_FLASH_BLOCK_SIZE := 262144
 
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 
-# Recovery
-TARGET_RECOVERY_QCOM_RTC_FIX := true
+# Partition's Filesystem
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
 
-# Resolution
-TARGET_SCREEN_WIDTH := 1080
-TARGET_SCREEN_HEIGHT := 2340
+# Workaround for error copying vendor files to recovery ramdisk
+TARGET_COPY_OUT_VENDOR := vendor
+
+# Recovery
+BOARD_HAS_LARGE_FILESYSTEM := true
+TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+AB_OTA_UPDATER := false
+
+# System-as-root
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+

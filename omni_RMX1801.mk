@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+# Release name
+PRODUCT_RELEASE_NAME := RMX1801
+
 $(call inherit-product, build/target/product/embedded.mk)
 
 # Inherit from our custom product configuration
@@ -22,6 +25,13 @@ $(call inherit-product, vendor/omni/config/common.mk)
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := RMX1801
 PRODUCT_NAME := omni_RMX1801
-PRODUCT_BRAND := oppo
-PRODUCT_MODEL := Realme 2 Pro
+PRODUCT_BRAND := Realme
+PRODUCT_MODEL := Realme 2 Project
 PRODUCT_MANUFACTURER := Oppo
+
+# enable stock zip packages flash
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.secure=1 \
+    ro.adb.secure=0 \
+    ro.allow.mock.location=0 \
+    ro.hardware.keystore=sdm660
